@@ -1,0 +1,25 @@
+# This config was automatically generated from your source code
+# Stacks detected: artifact:go-executable:,deps:go:.
+version: 2.1
+jobs:
+  docker-build:
+    # Install go modules and run tests
+    docker:
+      - image: cimg/go:1.20
+    steps:
+      - checkout
+      - run:
+          name: Docker login
+          command: docker login -u rabatel@adobe.com -p $DOCKER_API_KEY
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t shareit .
+            docker tag shareit registry.digitalocean.com/clockwork-registry/shareit:nico
+            docker push registry.digitalocean.com/clockwork-registry/shareit:nico
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - docker-build
