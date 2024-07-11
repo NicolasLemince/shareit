@@ -23,3 +23,5 @@ workflows:
   test:
     jobs:
       - docker-build
+    context:
+      - secrets
